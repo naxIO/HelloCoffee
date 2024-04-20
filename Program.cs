@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Reflection;
 
 public class CoffeeApp : Form
 {
@@ -24,61 +25,18 @@ public class CoffeeApp : Form
 
     public CoffeeApp()
     {
-        fullCupIcon = CreateCoffeeCupIcon(true);  // Für volle Tasse
-        emptyCupIcon = CreateCoffeeCupIcon(false); // Für leere Tasse
+        // Laden der Icons aus den eingebetteten Ressourcen
+        fullCupIcon = new Icon(Assembly.GetExecutingAssembly().GetManifestResourceStream("HelloCoffee.coffee-7-16.ico"));
+        emptyCupIcon = new Icon(Assembly.GetExecutingAssembly().GetManifestResourceStream("HelloCoffee.coffee-8-16.ico"));
 
         trayIcon = new NotifyIcon();
         trayIcon.Text = "CoffeeApp";
-        trayIcon.Icon = fullCupIcon; // Start with the full cup icon
+        trayIcon.Icon = fullCupIcon; // Starte mit dem vollen Tassen-Icon
         trayIcon.Visible = true;
 
         trayIcon.MouseClick += TrayIcon_MouseClick;
 
         SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_DISPLAY_REQUIRED);
-    }
-
-    private Icon CreateCoffeeCupIcon(bool isFull)
-    {
-        int size = 16;
-        Bitmap bmp = new Bitmap(size, size);
-        Color handleColor = Color.SaddleBrown;
-        Color cupColor = isFull ? Color.SaddleBrown : Color.White; // Dunkelbraun für voll, Weiß für leer
-        Color coffeeColor = Color.Black; // Kaffee nur sichtbar, wenn voll
-
-        using (Graphics g = Graphics.FromImage(bmp))
-        {
-            // Clear the image with white (empty cup)
-            g.Clear(Color.White);
-
-            // Draw the cup
-            for (int x = 4; x <= 12; x++)
-            {
-                for (int y = 4; y <= 12; y++)
-                {
-                    if (x >= 5 && x <= 11 && y >= 5 && y <= 11)
-                    {
-                        if (isFull && y > 7) // Fill with coffee color if full
-                            bmp.SetPixel(x, y, coffeeColor);
-                        else
-                            bmp.SetPixel(x, y, cupColor);
-                    }
-                    else
-                    {
-                        bmp.SetPixel(x, y, cupColor);
-                    }
-                }
-            }
-
-            // Draw the handle
-            if (size > 11)
-            {
-                bmp.SetPixel(13, 8, handleColor);
-                bmp.SetPixel(13, 9, handleColor);
-                bmp.SetPixel(12, 10, handleColor);
-            }
-        }
-
-        return Icon.FromHandle(bmp.GetHicon());
     }
 
     private void TrayIcon_MouseClick(object sender, MouseEventArgs e)
@@ -96,7 +54,7 @@ public class CoffeeApp : Form
 
         if (isCupFull)
         {
-            SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_DISPLAY_REQUIRED);
+            SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_SYSTEM_REQUIRED);
         }
         else
         {
@@ -106,8 +64,8 @@ public class CoffeeApp : Form
 
     protected override void OnLoad(EventArgs e)
     {
-        Visible = false; // Hide form window.
-        ShowInTaskbar = false; // Remove from taskbar.
+        Visible = false; // Verstecke das Formularfenster.
+        ShowInTaskbar = false; // Entferne aus der Taskleiste.
         base.OnLoad(e);
     }
 
