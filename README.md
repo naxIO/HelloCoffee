@@ -18,3 +18,15 @@ CoffeeApp leverages the Windows API to control the system's power state. By sett
 To run CoffeeApp, simply start the executable, and a coffee cup icon will appear in your system tray. Click the icon to toggle between keeping your computer awake and allowing it to enter power-saving modes. Right-click the icon and select "Exit" to close the application.
 
 This application is perfect for users who need their computer to remain active for long periods, such as for downloading large files, performing long-running computations, or ensuring uninterrupted access during remote sessions.
+
+## Disclaimer
+
+**IMPORTANT: Please read this disclaimer carefully before using the "CoffeeApp" software.**
+
+The use of "CoffeeApp" (hereinafter referred to as "the Software") is at your own risk. The Software is provided "as is" without warranty of any kind, either express or implied, including, but not limited to, the implied warranties of merchantability, fitness for a particular purpose, or non-infringement.
+
+The developers of the Software do not guarantee the correctness, reliability, completeness, or accuracy of the information provided by the Software and are not responsible for any errors, omissions, or inaccuracies contained therein. The developers shall not be liable for any damages, including but not limited to direct, indirect, special, incidental, or consequential damages arising out of the use or inability to use the Software.
+
+By using the Software, you are agreeing to this disclaimer and assuming all risks associated with the use of the Software. If you do not agree to this disclaimer, you should not use the Software.
+
+No advice or information, whether oral or written, obtained by you from the developers or through the Software shall create any warranty not expressly stated in this disclaimer.
