@@ -19,23 +19,26 @@ public class CoffeeApp : Form
     }
 
     private NotifyIcon trayIcon;
+    private ContextMenuStrip trayMenu;
     private bool isCupFull = true;
     private Icon fullCupIcon;
     private Icon emptyCupIcon;
 
     public CoffeeApp()
     {
-        // Laden der Icons aus den eingebetteten Ressourcen
         fullCupIcon = new Icon(Assembly.GetExecutingAssembly().GetManifestResourceStream("HelloCoffee.coffee-7-16.ico"));
         emptyCupIcon = new Icon(Assembly.GetExecutingAssembly().GetManifestResourceStream("HelloCoffee.coffee-8-16.ico"));
 
         trayIcon = new NotifyIcon();
         trayIcon.Text = "CoffeeApp";
-        trayIcon.Icon = fullCupIcon; // Starte mit dem vollen Tassen-Icon
+        trayIcon.Icon = fullCupIcon;
         trayIcon.Visible = true;
 
-        trayIcon.MouseClick += TrayIcon_MouseClick;
+        trayMenu = new ContextMenuStrip();
+        trayMenu.Items.Add("Exit", null, OnExit);
+        trayIcon.ContextMenuStrip = trayMenu;
 
+        trayIcon.MouseClick += TrayIcon_MouseClick;
         SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_DISPLAY_REQUIRED);
     }
 
@@ -51,7 +54,6 @@ public class CoffeeApp : Form
     {
         isCupFull = !isCupFull;
         trayIcon.Icon = isCupFull ? fullCupIcon : emptyCupIcon;
-
         if (isCupFull)
         {
             SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_SYSTEM_REQUIRED);
@@ -62,10 +64,15 @@ public class CoffeeApp : Form
         }
     }
 
+    private void OnExit(object sender, EventArgs e)
+    {
+        Application.Exit();
+    }
+
     protected override void OnLoad(EventArgs e)
     {
-        Visible = false; // Verstecke das Formularfenster.
-        ShowInTaskbar = false; // Entferne aus der Taskleiste.
+        Visible = false;
+        ShowInTaskbar = false;
         base.OnLoad(e);
     }
 
